@@ -1,5 +1,3 @@
-import { auth } from "../api";
-
 export const getToken = () => {
   const token = localStorage.getItem("token");
 
@@ -21,13 +19,4 @@ export const validateToken = async (error: any) => {
     return logout();
   }
   return true;
-};
-
-export const login = async (token: string) => {
-  const response = await auth.me(token);
-
-  localStorage.setItem("token", token);
-  localStorage.setItem("user", JSON.stringify(response));
-
-  window.location.href = "/";
 };

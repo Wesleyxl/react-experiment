@@ -1,12 +1,15 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { auth } from "../../api";
-import { login } from "../../services/auth";
 import { Container } from "./styles";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // dispatch
+  const dispatch = useDispatch();
 
   // loading
   const [loading, setLoading] = useState(false);
@@ -25,7 +28,18 @@ const Login: React.FC = () => {
     } else {
       const { access_token } = loginResponse;
 
-      login(access_token);
+      const data = await auth.me(access_token);
+      // console.log(me);
+
+      dispatch({
+        type: "SET_LOGIN",
+        payload: {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          token: access_token,
+        },
+      });
     }
   }
 
